@@ -1,0 +1,57 @@
+public class GraphColoring_Backtracking {
+    int V = 4;                      // Number of vertices (change as needed)
+    int[] color;                    // Color assignment to vertices
+
+    boolean isSafe(int v, int c, int[][] graph) {
+        for (int i = 0; i < V; i++)
+            if (graph[v][i] == 1 && color[i] == c)
+                return false;
+        return true;
+    }
+
+    boolean graphColoringUtil(int[][] graph, int m, int v) {
+        if (v == V)
+            return true;
+
+        for (int c = 1; c <= m; c++) {
+            if (isSafe(v, c, graph)) {
+                color[v] = c;
+                if (graphColoringUtil(graph, m, v + 1))
+                    return true;
+                color[v] = 0;
+            }
+        }
+        return false;
+    }
+
+    void graphColoring(int[][] graph, int m) {
+        color = new int[V];
+        if (!graphColoringUtil(graph, m, 0)) {
+            System.out.println("Solution doesn't exist.");
+            return;
+        }
+        printSolution();
+    }
+
+    void printSolution() {
+        System.out.print("Color assignment: ");
+        for (int i = 0; i < V; i++)
+            System.out.print(color[i] + " ");
+        System.out.println();
+    }
+
+
+    public static void main(String[] args) {
+
+        int[][] graph = {
+                {0, 1, 1, 1},
+                {1, 0, 1, 0},
+                {1, 1, 0, 1},
+                {1, 0, 1, 0}
+        };
+        int m = 3; // NUM of colors
+
+        GraphColoring_Backtracking gcp = new GraphColoring_Backtracking();
+        gcp.graphColoring(graph, m);
+    }
+}
