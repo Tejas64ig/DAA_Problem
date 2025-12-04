@@ -1,0 +1,81 @@
+public class Hamiltonian_Cycle_Backtrackingg {
+
+
+    int V = 5;                     //  vertices
+    int path[] = new int[5];       // path
+
+    // check if path can be added
+    boolean isSafe(int v, int[][] graph, int pos) {
+        // pre v edge to current
+        if (graph[path[pos - 1]][v] == 0)
+            return false;
+
+        // Check if vertex is already included
+        for (int i = 0; i < pos; i++)
+            if (path[i] == v)
+                return false;
+
+        return true;
+    }
+
+    // Recursive fun to find cycle
+    boolean hamiltonianUtil(int[][] graph, int pos) {
+        if (pos == V) {
+            // Check if last vertex connects to first
+            if (graph[path[pos - 1]][path[0]] == 1)
+                return true;
+            else
+                return false;
+        }
+
+        // Try other vertices
+        for (int v = 1; v < V; v++) {
+            if (isSafe(v, graph, pos)) {
+                path[pos] = v;
+
+                if (hamiltonianUtil(graph, pos + 1))
+                    return true;
+
+                path[pos] = -1;
+            }
+        }
+
+        return false;
+    }
+
+
+    void findHamiltonianCycle(int[][] graph) {
+        for (int i = 0; i < V; i++)
+            path[i] = -1;
+
+        path[0] = 0;
+
+        if (hamiltonianUtil(graph, 1)) {
+            printPath();
+        } else {
+            System.out.println("No Hamiltonian Cycle exists.");
+        }
+    }
+
+    void printPath() {
+        System.out.print("Hamiltonian Cycle exists: ");
+        char[] labels = {'T', 'M', 'S', 'H', 'C'};
+        for (int i = 0; i < V; i++)
+            System.out.print(labels[path[i]] + " ");
+        System.out.println(labels[path[0]]);
+    }
+
+    public static void main(String[] args) {
+        Hamiltonian_Cycle_Backtrackingg obj = new Hamiltonian_Cycle_Backtrackingg();
+
+        int[][] graph = {
+                {0, 1, 1, 0, 1},
+                {1, 0, 1, 1, 0},
+                {1, 1, 0, 1, 1},
+                {0, 1, 1, 0, 1},
+                {1, 0, 1, 1, 0}
+        };
+
+        obj.findHamiltonianCycle(graph);
+    }
+}
