@@ -24,7 +24,22 @@ public class Activity_Selection {
                 new ac("A10", 2, 14, 40),
                 new ac("A11", 12, 16, 45)
         };
-       
+        Arrays.sort(jobs, new Comparator<ac>() {
+            public int compare(ac a, ac b) {
+
+                return a.finish - b.finish;
+            }
+        });
+        int Total_pro = 0;
+        int last_finish = -1;
+        System.out.println("Selected Activities:");
+        for (ac job : jobs) {
+            if (job.start >= last_finish) {
+                Total_pro += job.pro;
+                last_finish = job.finish;
+                System.out.println(job.name + " (" + job.start + " - " +
+                        job.finish + ") Profit: " + job.pro);
+            }
         }
         System.out.println("Total Profit = " + Total_pro);
     }
